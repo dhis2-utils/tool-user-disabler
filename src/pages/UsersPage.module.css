@@ -1,0 +1,22 @@
+.container {
+    padding: var(--spacers-dp16);
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-block-size: 300px;
+}
+
+.bulkBar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp12);
+    margin-block-end: var(--spacers-dp8);
+}
+
+.selectionCount {
+    color: var(--colors-grey700);
+    font-size: 14px;
+}

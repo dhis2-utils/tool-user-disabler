@@ -1,8 +1,12 @@
+node_modules
+build
+.d2
 .tmp
 compiled
-build
-manifest.webapp
-node_modules
-.vscode
 bin
 d2auth.json
+src/locales
+.env*
+.DS_Store
+.pnpm-store
+.vscode
