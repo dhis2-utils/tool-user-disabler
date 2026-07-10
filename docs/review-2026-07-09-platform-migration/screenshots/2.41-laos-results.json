@@ -1,0 +1,77 @@
+[
+    {
+        "step": "app loads, table renders",
+        "status": "PASS",
+        "detail": "version 2.41.9"
+    },
+    {
+        "step": "default filter (6 months) matches API",
+        "status": "PASS",
+        "detail": "app=37 api=37"
+    },
+    {
+        "step": "apply with unchanged filter refetches",
+        "status": "PASS",
+        "detail": "requests before=1 after=2"
+    },
+    {
+        "step": "include never-logged-in merges + dedupes",
+        "status": "PASS",
+        "detail": "app=43 api=43"
+    },
+    {
+        "step": "search narrows results",
+        "status": "PASS",
+        "detail": "query=aanyo rows=1"
+    },
+    {
+        "step": "sort by username asc",
+        "status": "PASS",
+        "detail": "first=aanyo expected=aanyo"
+    },
+    {
+        "step": "info modal shows details",
+        "status": "PASS",
+        "detail": ""
+    },
+    {
+        "step": "single disable via row button",
+        "status": "PASS",
+        "detail": "user=demo_pt api disabled=True"
+    },
+    {
+        "step": "disabled user shows tag + unselectable checkbox",
+        "status": "PASS",
+        "detail": ""
+    },
+    {
+        "step": "bulk disable 2 users (confirm\u2192progress\u2192summary)",
+        "status": "PASS",
+        "detail": "users=['demo_ru', 'kirti'] api: 2 disabled, 0 rejected by server"
+    },
+    {
+        "step": "selection updated after bulk disable",
+        "status": "PASS",
+        "detail": "expected '0 users selected', got '0 users selected'"
+    },
+    {
+        "step": "create scheduler job with defaults",
+        "status": "PASS",
+        "detail": "{\"name\": \"Disable inactive users\", \"jobParameters\": {\"inactiveMonths\": 6, \"reminderDaysBefore\": 7}, \"enabled\": true, \"id\": \"gVdB9Ris707\"}"
+    },
+    {
+        "step": "toggle job disabled via switch",
+        "status": "PASS",
+        "detail": "enabled=False"
+    },
+    {
+        "step": "cleanup: job deleted",
+        "status": "PASS",
+        "detail": "gVdB9Ris707"
+    },
+    {
+        "step": "no unexpected console/page errors",
+        "status": "PASS",
+        "detail": "[]"
+    }
+]
