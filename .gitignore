@@ -10,3 +10,4 @@ src/locales
 .DS_Store
 .pnpm-store
 .vscode
+__pycache__

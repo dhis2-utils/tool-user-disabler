@@ -15,3 +15,7 @@ onlyBuiltDependencies:
     - '@dhis2/cli-helpers-engine'
     - core-js-pure
     - esbuild
+
+supportedArchitectures:
+    os: [darwin, linux]
+    cpu: [arm64, x64]
