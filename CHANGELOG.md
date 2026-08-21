@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * Users are now disabled via the dedicated `POST /api/users/{id}/disabled` endpoint instead of a full user PUT.
 * The scheduled job toggle now uses `POST /api/jobConfigurations/{id}/enable|disable`.
 * Filter by user role and group with searchable multi-selects; searchable, sortable, paginated user table.
+* Renamed the app to `tool-user-disabler` (title "User Disabler Tool"). Because DHIS2 keys apps by name, this installs alongside — rather than over — an existing `user-disabler` installation; remove the old one after upgrading.
 
 ## 0.1.4
 

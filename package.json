@@ -1,5 +1,5 @@
 {
-    "name": "user-disabler",
+    "name": "tool-user-disabler",
     "version": "1.0.0",
     "description": "App to quickly find and disable inactive users.",
     "author": "HISP Centre - University of Oslo <olav@dhis2.org>",

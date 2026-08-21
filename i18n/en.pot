@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-07-10T04:29:55.482Z\n"
-"PO-Revision-Date: 2026-07-10T04:29:55.485Z\n"
+"POT-Creation-Date: 2026-08-21T12:33:32.770Z\n"
+"PO-Revision-Date: 2026-08-21T12:33:32.770Z\n"
 
 msgid "Name is required"
 msgstr "Name is required"
@@ -228,3 +228,11 @@ msgstr "1 user selected"
 
 msgid "Never"
 msgstr "Never"
+
+msgctxt "Application title"
+msgid "__MANIFEST_APP_TITLE"
+msgstr "User Disabler Tool"
+
+msgctxt "Application description"
+msgid "__MANIFEST_APP_DESCRIPTION"
+msgstr "App to quickly find and disable inactive users."
