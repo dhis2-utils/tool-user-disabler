@@ -2,12 +2,14 @@
 """End-to-end acceptance suite for the User Disabler app.
 
 Runs against a live DHIS2 instance where the app is installed
-(POST build/bundle/user-disabler-<version>.zip to /api/apps first).
+(POST build/bundle/<app-key>-<version>.zip to /api/apps first).
 
 Environment variables:
     DHIS2_URL   e.g. http://dhis2-agent-ud-41:8080  (required)
     DHIS2_USER  default: admin
     DHIS2_PASS  default: district
+    APP_KEY     app key / manifest short_name, i.e. the `name` in
+                d2.config.js (default: tool-user-disabler)
     LABEL       label used in output, e.g. "2.41-laos" (default: instance version)
     OUTDIR      where to write screenshots/results (default: /tmp/ud-e2e)
 
@@ -32,6 +34,7 @@ BASE = os.environ["DHIS2_URL"].rstrip("/")
 USER = os.environ.get("DHIS2_USER", "admin")
 PASS = os.environ.get("DHIS2_PASS", "district")
 OUTDIR = os.environ.get("OUTDIR", "/tmp/ud-e2e")
+APP_KEY = os.environ.get("APP_KEY", "tool-user-disabler")
 AUTH = "Basic " + base64.b64encode(f"{USER}:{PASS}".encode()).decode()
 USER_FIELDS = "id,username,firstName,surname,disabled,created,lastLogin"
 
@@ -86,7 +89,7 @@ def login_cookie():
 def app_frame(page):
     """Return the frame the app runs in (global-shell iframe on 2.42+)."""
     for f in page.frames:
-        if "user-disabler" in f.url and f != page.main_frame:
+        if APP_KEY in f.url and f != page.main_frame:
             return f
     return page.main_frame
 
@@ -191,7 +194,7 @@ def main():
                 if "users?" in r.url else None)
 
         # ---- 1. App loads
-        page.goto(f"{BASE}/api/apps/user-disabler/index.html")
+        page.goto(f"{BASE}/api/apps/{APP_KEY}/index.html")
         page.wait_for_load_state("networkidle")
         frame = app_frame(page)
         try:
@@ -426,13 +429,20 @@ def main():
         jmodal = frame.locator("[data-test='create-job-modal']")
         jmodal.wait_for(timeout=10_000)
         jmodal.locator("[data-test='create-job-submit']").click()
-        page.wait_for_timeout(2500)
-        jobs = api(
-            "jobConfigurations.json?filter=jobType:eq:DISABLE_INACTIVE_USERS"
-            "&fields=id,name,enabled,jobParameters"
-        ).get("jobConfigurations", [])
-        created = [j for j in jobs if j["id"] not in
-                   {jb["id"] for jb in jobs_before}]
+        # Poll for the new job rather than assuming the POST lands within a
+        # fixed delay: on a loaded host it can take several seconds, and a
+        # fixed wait made this step flake (and then skipped its own cleanup).
+        before_ids = {jb["id"] for jb in jobs_before}
+        created = []
+        for _ in range(15):
+            page.wait_for_timeout(1000)
+            jobs = api(
+                "jobConfigurations.json?filter=jobType:eq:DISABLE_INACTIVE_USERS"
+                "&fields=id,name,enabled,jobParameters"
+            ).get("jobConfigurations", [])
+            created = [j for j in jobs if j["id"] not in before_ids]
+            if created:
+                break
         job_ok = len(created) == 1 and created[0]["enabled"] and \
             created[0]["jobParameters"]["inactiveMonths"] == 6
         record(
@@ -457,9 +467,26 @@ def main():
                     break
             record("toggle job disabled via switch", state is False,
                    f"enabled={state}")
-            # cleanup: delete the job
-            api(f"jobConfigurations/{created[0]['id']}", method="DELETE")
-            record("cleanup: job deleted", True, created[0]["id"])
+
+        # Cleanup runs regardless of the assertions above: delete every
+        # DISABLE_INACTIVE_USERS job this run introduced. Kept outside the
+        # `if created:` branch so a slow POST that the poll missed can't
+        # orphan a job on the instance.
+        leftover = [
+            j
+            for j in api(
+                "jobConfigurations.json"
+                "?filter=jobType:eq:DISABLE_INACTIVE_USERS&fields=id"
+            ).get("jobConfigurations", [])
+            if j["id"] not in before_ids
+        ]
+        for job in leftover:
+            api(f"jobConfigurations/{job['id']}", method="DELETE")
+        record(
+            "cleanup: job deleted",
+            len(leftover) == len(created) or not created,
+            ", ".join(j["id"] for j in leftover) or "nothing to delete",
+        )
 
         # ---- 13. Console/page errors
         record(
