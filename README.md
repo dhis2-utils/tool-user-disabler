@@ -1,19 +1,23 @@
 # User Disabler Tool
 
-This DHIS2 app allows system administrators to efficiently manage user accounts by disabling inactive users based on a specified period of inactivity. Administrators can also include users who have never logged in and already disabled users in the filtering process. The purpose is to help administrators ensure only accounts that are in active use can be used to access the system.
-
+> ![Maturity: Validated](https://img.shields.io/badge/maturity-Validated-yellow)  
+> Intended use: finding and (bulk) disabling inactive users
+> Maintainers: HISP Centre implementation team.
+>
 > **WARNING**
 > This tool is intended to be used by system administrators to perform specific tasks, it is not intended for end users. It is available as a DHIS2 app, but has not been through the same rigorous testing as normal core apps. It should be used with care, and always tested in a development environment.
 
-Features
+This DHIS2 app allows system administrators to efficiently manage user accounts by disabling inactive users based on a specified period of inactivity. Administrators can also include users who have never logged in and already disabled users in the filtering process. The purpose is to help administrators ensure only accounts that are in active use can be used to access the system.
 
-- Filter users based on the login date.
-- Selectively disable multiple users in bulk.
-- View user details in a modal dialog.
+Features
+* Filter users based on the login date.
+* Selectively disable multiple users in bulk.
+* View user details in a modal dialog.
+
 
 ## License
 
-© Copyright University of Oslo 2025
+© Copyright University of Oslo 2026
 
 ## Usage
 
