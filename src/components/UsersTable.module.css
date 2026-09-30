@@ -1,0 +1,9 @@
+.tableToolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-block-end: var(--spacers-dp8);
+}
+
+.search {
+    inline-size: 280px;
+}

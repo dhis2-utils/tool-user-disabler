@@ -1,0 +1,238 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2026-08-21T12:33:32.770Z\n"
+"PO-Revision-Date: 2026-08-21T12:33:32.770Z\n"
+
+msgid "Name is required"
+msgstr "Name is required"
+
+msgid "Enter a whole number"
+msgstr "Enter a whole number"
+
+msgid "Must be at least 1"
+msgstr "Must be at least 1"
+
+msgid "Cron expression is required"
+msgstr "Cron expression is required"
+
+msgid "Disable inactive users"
+msgstr "Disable inactive users"
+
+msgid "Create job to disable inactive users"
+msgstr "Create job to disable inactive users"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Inactive months"
+msgstr "Inactive months"
+
+msgid "Users who have not logged in for this many months are disabled"
+msgstr "Users who have not logged in for this many months are disabled"
+
+msgid "Reminder days before"
+msgstr "Reminder days before"
+
+msgid "Days before disabling that users receive a reminder email"
+msgstr "Days before disabling that users receive a reminder email"
+
+msgid "Cron expression"
+msgstr "Cron expression"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Create job"
+msgstr "Create job"
+
+msgid "User \"{{username}}\" will be disabled. Do you want to continue?"
+msgstr "User \"{{username}}\" will be disabled. Do you want to continue?"
+
+msgid "Disable users"
+msgstr "Disable users"
+
+msgid "{{done}} of {{total}} users updated…"
+msgstr "{{done}} of {{total}} users updated…"
+
+msgid "1 user was successfully disabled"
+msgstr "1 user was successfully disabled"
+
+msgid "1 user could not be disabled."
+msgstr "1 user could not be disabled."
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Confirm"
+msgstr "Confirm"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Scheduled job to disable inactive users"
+msgstr "Scheduled job to disable inactive users"
+
+msgid ""
+"A scheduled job can routinely disable users who have not logged in for a "
+"specified period."
+msgstr ""
+"A scheduled job can routinely disable users who have not logged in for a "
+"specified period."
+
+msgid "Error loading job status"
+msgstr "Error loading job status"
+
+msgid "No job to disable inactive users exists."
+msgstr "No job to disable inactive users exists."
+
+msgid "Add job"
+msgstr "Add job"
+
+msgid "Enabled"
+msgstr "Enabled"
+
+msgid "Disabled"
+msgstr "Disabled"
+
+msgid "Several jobs configured"
+msgstr "Several jobs configured"
+
+msgid ""
+"Several jobs to disable inactive users are configured, see more in the "
+"Scheduler app."
+msgstr ""
+"Several jobs to disable inactive users are configured, see more in the "
+"Scheduler app."
+
+msgid "Period inactive"
+msgstr "Period inactive"
+
+msgid "Months"
+msgstr "Months"
+
+msgid "Years"
+msgstr "Years"
+
+msgid "Since date"
+msgstr "Since date"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Select a date"
+msgstr "Select a date"
+
+msgid "Number of months"
+msgstr "Number of months"
+
+msgid "Number of years"
+msgstr "Number of years"
+
+msgid "Enter a whole number of at least 1"
+msgstr "Enter a whole number of at least 1"
+
+msgid "User roles"
+msgstr "User roles"
+
+msgid "All user roles"
+msgstr "All user roles"
+
+msgid "User groups"
+msgstr "User groups"
+
+msgid "All user groups"
+msgstr "All user groups"
+
+msgid "Include users who never logged in"
+msgstr "Include users who never logged in"
+
+msgid "Include already disabled users"
+msgstr "Include already disabled users"
+
+msgid "Apply filter"
+msgstr "Apply filter"
+
+msgid "User details"
+msgstr "User details"
+
+msgid "Error loading user"
+msgstr "Error loading user"
+
+msgid "First name"
+msgstr "First name"
+
+msgid "Surname"
+msgstr "Surname"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Created"
+msgstr "Created"
+
+msgid "Last login"
+msgstr "Last login"
+
+msgid "None"
+msgstr "None"
+
+msgid "Organisation units"
+msgstr "Organisation units"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Disable"
+msgstr "Disable"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Search users"
+msgstr "Search users"
+
+msgid "Sort"
+msgstr "Sort"
+
+msgid "No users match the current filter"
+msgstr "No users match the current filter"
+
+msgid "Failed to update job: {{message}}"
+msgstr "Failed to update job: {{message}}"
+
+msgid "Job created"
+msgstr "Job created"
+
+msgid "Failed to create job: {{message}}"
+msgstr "Failed to create job: {{message}}"
+
+msgid "Error loading users"
+msgstr "Error loading users"
+
+msgid "Bulk disable"
+msgstr "Bulk disable"
+
+msgid "1 user selected"
+msgstr "1 user selected"
+
+msgid "Never"
+msgstr "Never"
+
+msgctxt "Application title"
+msgid "__MANIFEST_APP_TITLE"
+msgstr "User Disabler Tool"
+
+msgctxt "Application description"
+msgid "__MANIFEST_APP_DESCRIPTION"
+msgstr "App to quickly find and disable inactive users."

@@ -1,0 +1,36 @@
+.form {
+    background: var(--colors-white);
+    border: 1px solid var(--colors-grey400);
+    border-radius: 4px;
+    padding: var(--spacers-dp12) var(--spacers-dp16);
+    margin-block-end: var(--spacers-dp16);
+}
+
+.fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacers-dp12);
+    align-items: flex-start;
+}
+
+.periodType {
+    inline-size: 160px;
+}
+
+.numPeriods {
+    inline-size: 160px;
+}
+
+.multiSelect {
+    min-inline-size: 260px;
+    flex: 1;
+    max-inline-size: 480px;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacers-dp16);
+    align-items: center;
+    margin-block-start: var(--spacers-dp12);
+}

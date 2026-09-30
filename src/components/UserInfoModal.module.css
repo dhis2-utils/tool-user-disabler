@@ -1,0 +1,23 @@
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-block-size: 200px;
+}
+
+.detailsList {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--spacers-dp8) var(--spacers-dp16);
+    margin: 0;
+}
+
+.detailsList dt {
+    font-weight: 600;
+    color: var(--colors-grey800);
+}
+
+.detailsList dd {
+    margin: 0;
+    color: var(--colors-grey900);
+}
