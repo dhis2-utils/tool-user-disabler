@@ -10,10 +10,10 @@
 This DHIS2 app allows system administrators to efficiently manage user accounts by disabling inactive users based on a specified period of inactivity. Administrators can also include users who have never logged in and already disabled users in the filtering process. The purpose is to help administrators ensure only accounts that are in active use can be used to access the system.
 
 Features
-* Filter users based on the login date.
-* Selectively disable multiple users in bulk.
-* View user details in a modal dialog.
 
+- Filter users based on the login date.
+- Selectively disable multiple users in bulk.
+- View user details in a modal dialog.
 
 ## License
 
