@@ -1,96 +1,66 @@
 # User Disabler Tool
 
 > ![Maturity: Validated](https://img.shields.io/badge/maturity-Validated-yellow)  
-> Intended use: finding and (bulk) disabling inactive users
+> Intended use: finding and disabling inactive users, one by one or in bulk.  
 > Maintainers: HISP Centre implementation team.
->
-> **WARNING**
-> This tool is intended to be used by system administrators to perform specific tasks, it is not intended for end users. It is available as a DHIS2 app, but has not been through the same rigorous testing as normal core apps. It should be used with care, and always tested in a development environment.
 
-This DHIS2 app allows system administrators to efficiently manage user accounts by disabling inactive users based on a specified period of inactivity. Administrators can also include users who have never logged in and already disabled users in the filtering process. The purpose is to help administrators ensure only accounts that are in active use can be used to access the system.
+> [!WARNING]
+> This tool is for system administrators, not end users. It is a DHIS2 app, but it has not been through the same testing as the core apps. It disables user accounts in bulk: try it on a copy of your database first.
 
-Features
+The User Disabler Tool lists the users who have not logged in to DHIS2 for a chosen period and disables them, and manages the DHIS2 job that does this on a schedule. The user documentation is in [`docs/user/`](docs/user/tool-user-disabler.md).
 
-- Filter users based on the login date.
-- Selectively disable multiple users in bulk.
-- View user details in a modal dialog.
+The rest of this README is for developers.
 
-## License
+## Supported DHIS2 versions
 
-© Copyright University of Oslo 2026
+DHIS2 2.41 and later (`minDHIS2Version` in `d2.config.js`). The end-to-end suite runs on 2.41, 2.42 and 2.43.
 
-## Usage
+## Prerequisites
 
-### How to Use the App
+- Node.js 22.
+- pnpm 10. The version is pinned in `package.json` (`packageManager`); `corepack enable` installs it.
+- A DHIS2 instance to develop against, for example a local one on `http://localhost:8080`. [DHIS2 in Docker](https://developers.dhis2.org/docs/tutorials/dhis2-docker/) explains how to start one.
 
-1. **Access the App**: After installing the app in your DHIS2 instance, navigate to the "User Disabler" app through the DHIS2 interface.
+## Install dependencies
 
-2. **Set Filter Criteria**:
-    - **Period Inactive**: Use the dropdown menu to select how you want to filter users (by months, years, or a specific date).
-    - **Number of Periods**: If selecting months or years, specify the number (default is 6).
-    - **Specific Date**: If you chose "Since date", input the desired date.
-    - **Include Never Logged In**: Check this box if you wish to include users who have never logged in.
-    - **Include Already Disabled Users**: Check this box to also include users who are already disabled in the results.
-
-3. **Apply Filter**: Click on the **"Apply Filter"** button to fetch users based on the selected criteria. The app will display a table with the filtered users.
-
-4. **Select Users**:
-    - In the user list, check the checkbox next to the usernames of the users you wish to disable. You can also use the **"Select All"** checkbox at the top of the column to select all users that meet the filter criteria.
-
-5. **Bulk Disable Users**:
-    - After selecting the desired users, click the **"Bulk Disable"** button. A confirmation modal will appear showing the number of users that will be disabled.
-    - Confirm the action by clicking **"Confirm"** in the confirmation modal. The app will then begin the bulk disabling process, and progress updates will be displayed.
-
-6. **View User Details**: To see more information about a specific user, click the **"Info"** button next to the user in the table. A modal will show all relevant user details.
-
-7. **Check Completion and Summary**:
-    - Once the bulk disable process is complete, a summary modal will display the success count and any errors encountered during the operation.
-
-8. **Error Handling**: If any errors occur during user updates, appropriate error messages will be displayed, allowing you to take necessary actions.
-
-By following these steps, administrators can easily disable inactive users and manage user accounts efficiently within the DHIS2 platform.
-
-### Technical Tips
-
-- Ensure that you have the necessary permissions to disable user accounts in your DHIS2 instance.
-- Always test in a development environment before applying changes in a production environment.
-
-## Getting started
-
-This app is built with the [DHIS2 App Platform](https://developers.dhis2.org/docs/app-platform/getting-started) (React, TypeScript, `@dhis2/ui`). It requires DHIS2 2.41 or later.
-
-### Install dependencies
-
-To install app dependencies:
-
-```
+```bash
 pnpm install
 ```
 
-### Start dev server
+## Start against a local instance
 
-To start the development server against a local DHIS2 instance on `http://localhost:8080`:
-
-```
+```bash
 pnpm start
 ```
 
-To develop against a remote instance, use the built-in CORS proxy and log in with `http://localhost:8080` as the server URL:
+Open the address that the command prints, and log in with `http://localhost:8080` as the server. The app is built with the [DHIS2 App Platform](https://developers.dhis2.org/docs/app-platform/getting-started) (React, TypeScript, `@dhis2/ui`).
 
-```
-pnpm start --proxy https://play.im.dhis2.org/dev
-```
+## Test, lint and build
 
-### Build
-
-To build a production `.zip` file that can be installed in DHIS2 (output in `build/bundle/`):
-
-```
-pnpm run build
+```bash
+pnpm test         # unit tests (src/**/*.test.ts)
+pnpm run lint     # Ultracite: Oxlint and Oxfmt
+pnpm run format   # fix formatting
+pnpm exec tsc --noEmit
+pnpm run build    # writes build/bundle/tool-user-disabler-<version>.zip
 ```
 
-### Lint
+The unit tests include a check that every `i18n.t` key reaches `i18n/en.pot`. If it fails after you add a text, run `pnpm run build` to regenerate the file, and commit it.
 
-```
-pnpm run lint
-```
+Linting follows [LINTING.md](https://github.com/dhis2-utils/reference-tool-conventions/blob/main/LINTING.md) in reference-tool-conventions. With Claude Code, a hook in `.claude/` lints every file the agent edits; `AGENTS.md` has the rules.
+
+The end-to-end suite drives the built app on a live instance. It changes and deletes data, so read [`e2e/README.md`](e2e/README.md) before you run it.
+
+## Release
+
+Releases follow [RELEASE-WORKFLOW.md](https://github.com/dhis2-utils/reference-tool-conventions/blob/main/RELEASE-WORKFLOW.md) in reference-tool-conventions:
+
+1. Bump `version` in `package.json`, and add a `## [x.y.z]` section to `CHANGELOG.md`.
+2. Merge to `main` and let CI pass.
+3. Tag the merged commit: `git tag vx.y.z && git push origin vx.y.z`.
+
+The Release workflow builds the app and attaches the zip to a GitHub release.
+
+## License
+
+BSD-3-Clause, © University of Oslo 2026. See [LICENSE](LICENSE).

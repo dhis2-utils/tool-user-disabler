@@ -11,3 +11,4 @@ src/locales
 .pnpm-store
 .vscode
 __pycache__
+e2e/results

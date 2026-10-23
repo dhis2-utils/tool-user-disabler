@@ -47,7 +47,7 @@ export const JobSection = () => {
             {!isLoading && !error && jobs.length === 1 && (
                 <div className={styles.statusRow}>
                     <span>
-                        {i18n.t('Job name:')} <strong>{jobs[0].name}</strong>
+                        {i18n.t('Job name')}: <strong>{jobs[0].name}</strong>
                     </span>
                     {jobs[0].enabled ? (
                         <Tag positive>{i18n.t('Enabled')}</Tag>

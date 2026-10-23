@@ -17,12 +17,12 @@ import {
 } from '@dhis2/ui'
 import { useState } from 'react'
 import { useDisableUsers } from '../hooks/useDisableUsers'
-import { DisableResult, UserListItem } from '../types'
+import type { DisableResult, UserListItem } from '../types'
 import styles from './DisableUsersModal.module.css'
 
 type Phase = 'confirm' | 'running' | 'done'
 
-type DisableUsersModalProps = {
+interface DisableUsersModalProps {
     users: UserListItem[]
     onClose: () => void
     onCompleted: (results: DisableResult[]) => void
@@ -57,8 +57,8 @@ export const DisableUsersModal = ({
                   { username: users[0].username }
               )
             : i18n.t(
-                  '{{count}} users will be disabled. Do you want to continue?',
-                  { count: users.length }
+                  '{{number}} users will be disabled. Do you want to continue?',
+                  { number: users.length }
               )
 
     return (
@@ -91,8 +91,8 @@ export const DisableUsersModal = ({
                                 successCount === 1
                                     ? i18n.t('1 user was successfully disabled')
                                     : i18n.t(
-                                          '{{count}} users were successfully disabled',
-                                          { count: successCount }
+                                          '{{number}} users were successfully disabled',
+                                          { number: successCount }
                                       )
                             }
                         >
@@ -100,8 +100,8 @@ export const DisableUsersModal = ({
                                 (failures.length === 1
                                     ? i18n.t('1 user could not be disabled.')
                                     : i18n.t(
-                                          '{{count}} users could not be disabled.',
-                                          { count: failures.length }
+                                          '{{number}} users could not be disabled.',
+                                          { number: failures.length }
                                       ))}
                         </NoticeBox>
                         {failures.length > 0 && (

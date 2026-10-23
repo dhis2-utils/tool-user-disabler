@@ -2,3 +2,6 @@ pnpm-lock.yaml
 .pnpm-store
 .vscode
 CHANGELOG.md
+# Vendored by `ultracite init --install-skill`; keep as upstream ships it
+.agents
+skills-lock.json

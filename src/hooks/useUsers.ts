@@ -1,7 +1,7 @@
 import { useDataEngine } from '@dhis2/app-runtime'
 import { useQuery } from '@tanstack/react-query'
-import { ResourceQuery } from '../interfaces/apiQueryTypes'
-import { UserFilter, UserListItem } from '../types'
+import type { ResourceQuery } from '../interfaces/apiQueryTypes'
+import type { UserFilter, UserListItem } from '../types'
 import { getInactiveSince } from '../utils/dates'
 
 const USER_FIELDS = 'id,username,firstName,surname,disabled,created,lastLogin'

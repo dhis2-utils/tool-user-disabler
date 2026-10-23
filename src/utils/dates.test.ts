@@ -1,4 +1,5 @@
-import { DEFAULT_FILTER, UserFilter } from '../types'
+import type { UserFilter } from '../types'
+import { DEFAULT_FILTER } from '../types'
 import { getInactiveSince } from './dates'
 
 const filter = (overrides: Partial<UserFilter>): UserFilter => ({

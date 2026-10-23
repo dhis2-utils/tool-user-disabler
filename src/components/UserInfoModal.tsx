@@ -14,7 +14,7 @@ import { formatDate } from '../utils/dates'
 import { getErrorMessage } from '../utils/errors'
 import styles from './UserInfoModal.module.css'
 
-type UserInfoModalProps = {
+interface UserInfoModalProps {
     userId: string
     onClose: () => void
 }
@@ -58,7 +58,7 @@ export const UserInfoModal = ({ userId, onClose }: UserInfoModalProps) => {
                         <dd>
                             {user.userRoles
                                 .map((role) => role.displayName)
-                                .join(', ')}
+                                .join(', ') || i18n.t('None')}
                         </dd>
                         <dt>{i18n.t('User groups')}</dt>
                         <dd>

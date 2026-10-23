@@ -1,4 +1,4 @@
-export type UserListItem = {
+export interface UserListItem {
     id: string
     username: string
     firstName: string
@@ -16,7 +16,7 @@ export type UserDetails = UserListItem & {
 
 export type PeriodType = 'months' | 'years' | 'date'
 
-export type UserFilter = {
+export interface UserFilter {
     periodType: PeriodType
     numPeriods: number
     specificDate: string
@@ -36,13 +36,13 @@ export const DEFAULT_FILTER: UserFilter = {
     includeDisabled: false,
 }
 
-export type JobConfiguration = {
+export interface JobConfiguration {
     id: string
     name: string
     enabled: boolean
 }
 
-export type DisableResult = {
+export interface DisableResult {
     userId: string
     username: string
     status: 'success' | 'error'

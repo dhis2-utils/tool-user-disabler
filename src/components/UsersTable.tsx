@@ -14,10 +14,15 @@ import {
     Pagination,
     Tag,
 } from '@dhis2/ui'
-import {
+import type {
     Column,
+    Row,
+    RowData,
     RowSelectionState,
     SortingState,
+    Table,
+} from '@tanstack/react-table'
+import {
     createColumnHelper,
     flexRender,
     getCoreRowModel,
@@ -26,8 +31,9 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-import { Dispatch, SetStateAction, useMemo, useState } from 'react'
-import { UserListItem } from '../types'
+import type { Dispatch, SetStateAction } from 'react'
+import { useMemo, useState } from 'react'
+import type { UserListItem } from '../types'
 import { formatDate } from '../utils/dates'
 import styles from './UsersTable.module.css'
 
@@ -36,8 +42,112 @@ const columnHelper = createColumnHelper<UserListItem>()
 const getSortDirection = (column: Column<UserListItem>) =>
     column.getIsSorted() || 'default'
 
-type UsersTableProps = {
+declare module '@tanstack/react-table' {
+    // oxlint-disable-next-line no-unused-vars -- TData must match TanStack's declaration to merge with it
+    interface TableMeta<TData extends RowData> {
+        currentUserId: string
+        onDisable: (user: UserListItem) => void
+        onShowInfo: (user: UserListItem) => void
+    }
+}
+
+type UserTable = Table<UserListItem>
+type UserRow = Row<UserListItem>
+
+// TanStack selects (and counts) only the rows that match the search.
+const SelectAllHeader = ({ table }: { table: UserTable }) => (
+    <Checkbox
+        checked={table.getIsAllRowsSelected()}
+        indeterminate={table.getIsSomeRowsSelected()}
+        onChange={({ checked }) => table.toggleAllRowsSelected(checked)}
+        dataTest="select-all-users"
+    />
+)
+
+const SelectRowCell = ({ row }: { row: UserRow }) => (
+    <Checkbox
+        checked={row.getIsSelected()}
+        disabled={!row.getCanSelect()}
+        onChange={({ checked }) => row.toggleSelected(checked)}
+        dataTest={`select-user-${row.original.username}`}
+    />
+)
+
+const StatusCell = ({ row, table }: { row: UserRow; table: UserTable }) => (
+    <div className={styles.tags}>
+        {row.original.disabled ? (
+            <Tag negative>{i18n.t('Disabled')}</Tag>
+        ) : (
+            <Tag positive>{i18n.t('Active')}</Tag>
+        )}
+        {row.original.id === table.options.meta?.currentUserId && (
+            <Tag neutral dataTest="current-user-tag">
+                {i18n.t('You')}
+            </Tag>
+        )}
+    </div>
+)
+
+const ActionsCell = ({ row, table }: { row: UserRow; table: UserTable }) => {
+    const meta = table.options.meta
+    return (
+        <ButtonStrip>
+            <Button
+                small
+                destructive
+                secondary
+                disabled={!row.getCanSelect()}
+                onClick={() => meta?.onDisable(row.original)}
+            >
+                {i18n.t('Disable')}
+            </Button>
+            <Button small onClick={() => meta?.onShowInfo(row.original)}>
+                {i18n.t('Info')}
+            </Button>
+        </ButtonStrip>
+    )
+}
+
+// Built on first render rather than at module load, so the headers are
+// translated with the user's locale.
+const buildColumns = () => [
+    columnHelper.display({
+        id: 'select',
+        header: SelectAllHeader,
+        cell: SelectRowCell,
+    }),
+    columnHelper.accessor('username', {
+        header: i18n.t('Username'),
+    }),
+    columnHelper.accessor('firstName', {
+        header: i18n.t('First name'),
+    }),
+    columnHelper.accessor('surname', {
+        header: i18n.t('Surname'),
+    }),
+    columnHelper.accessor('disabled', {
+        header: i18n.t('Status'),
+        cell: StatusCell,
+    }),
+    columnHelper.accessor('created', {
+        header: i18n.t('Created'),
+        cell: (info) => formatDate(info.getValue()),
+    }),
+    columnHelper.accessor((row) => row.lastLogin ?? '', {
+        id: 'lastLogin',
+        header: i18n.t('Last login'),
+        cell: (info) => formatDate(info.getValue() || null),
+    }),
+    columnHelper.display({
+        id: 'actions',
+        header: i18n.t('Actions'),
+        cell: ActionsCell,
+    }),
+]
+
+interface UsersTableProps {
     users: UserListItem[]
+    currentUserId: string
     rowSelection: RowSelectionState
     onRowSelectionChange: Dispatch<SetStateAction<RowSelectionState>>
     onShowInfo: (user: UserListItem) => void
@@ -46,6 +156,7 @@ type UsersTableProps = {
 
 export const UsersTable = ({
     users,
+    currentUserId,
     rowSelection,
     onRowSelectionChange,
     onShowInfo,
@@ -53,87 +164,19 @@ export const UsersTable = ({
 }: UsersTableProps) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState('')
+    const columns = useMemo(() => buildColumns(), [])
 
-    const columns = useMemo(
-        () => [
-            columnHelper.display({
-                id: 'select',
-                header: ({ table }) => (
-                    <Checkbox
-                        checked={table.getIsAllRowsSelected()}
-                        indeterminate={table.getIsSomeRowsSelected()}
-                        onChange={({ checked }) =>
-                            table.toggleAllRowsSelected(checked)
-                        }
-                        dataTest="select-all-users"
-                    />
-                ),
-                cell: ({ row }) => (
-                    <Checkbox
-                        checked={row.getIsSelected()}
-                        disabled={!row.getCanSelect()}
-                        onChange={({ checked }) => row.toggleSelected(checked)}
-                        dataTest={`select-user-${row.original.username}`}
-                    />
-                ),
-            }),
-            columnHelper.accessor('username', {
-                header: i18n.t('Username'),
-            }),
-            columnHelper.accessor('firstName', {
-                header: i18n.t('First name'),
-            }),
-            columnHelper.accessor('surname', {
-                header: i18n.t('Surname'),
-            }),
-            columnHelper.accessor('disabled', {
-                header: i18n.t('Status'),
-                cell: (info) =>
-                    info.getValue() ? (
-                        <Tag negative>{i18n.t('Disabled')}</Tag>
-                    ) : (
-                        <Tag positive>{i18n.t('Active')}</Tag>
-                    ),
-            }),
-            columnHelper.accessor('created', {
-                header: i18n.t('Created'),
-                cell: (info) => formatDate(info.getValue()),
-            }),
-            columnHelper.accessor((row) => row.lastLogin ?? '', {
-                id: 'lastLogin',
-                header: i18n.t('Last login'),
-                cell: (info) => formatDate(info.getValue() || null),
-            }),
-            columnHelper.display({
-                id: 'actions',
-                header: i18n.t('Actions'),
-                cell: ({ row }) => (
-                    <ButtonStrip>
-                        <Button
-                            small
-                            destructive
-                            secondary
-                            disabled={row.original.disabled}
-                            onClick={() => onDisable(row.original)}
-                        >
-                            {i18n.t('Disable')}
-                        </Button>
-                        <Button small onClick={() => onShowInfo(row.original)}>
-                            {i18n.t('Info')}
-                        </Button>
-                    </ButtonStrip>
-                ),
-            }),
-        ],
-        [onDisable, onShowInfo]
-    )
-
+    // oxlint-disable-next-line react/incompatible-library -- the app is not compiled with React Compiler; useReactTable is TanStack's documented API
     const table = useReactTable({
         data: users,
         columns,
+        meta: { currentUserId, onDisable, onShowInfo },
         state: { sorting, globalFilter, rowSelection },
         getRowId: (row) => row.id,
-        enableRowSelection: (row) => !row.original.disabled,
+        // Admins cannot disable their own account here: one "select all"
+        // with a broad filter would otherwise lock them out.
+        enableRowSelection: (row) =>
+            !row.original.disabled && row.original.id !== currentUserId,
         onRowSelectionChange,
         onSortingChange: setSorting,
         onGlobalFilterChange: setGlobalFilter,
@@ -154,6 +197,7 @@ export const UsersTable = ({
             <div className={styles.tableToolbar}>
                 <InputField
                     placeholder={i18n.t('Search users')}
+                    dataTest="search-users"
                     value={globalFilter}
                     onChange={({ value }) => setGlobalFilter(value ?? '')}
                     dense

@@ -1,5 +1,5 @@
 import i18n from '@dhis2/d2-i18n'
-import { UserFilter } from '../types'
+import type { UserFilter } from '../types'
 
 export const formatDate = (date?: string | null): string => {
     if (!date) {

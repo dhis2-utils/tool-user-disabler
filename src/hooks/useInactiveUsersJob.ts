@@ -1,13 +1,13 @@
 import { useAlert, useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { JobConfiguration } from '../types'
+import type { JobConfiguration } from '../types'
 import { getErrorMessage } from '../utils/errors'
 import { useApiDataQuery } from '../utils/useApiDataQuery'
 
 export const JOB_TYPE = 'DISABLE_INACTIVE_USERS'
 
-export type NewJobValues = {
+export interface NewJobValues {
     name: string
     inactiveMonths: number
     reminderDaysBefore: number
@@ -40,6 +40,8 @@ export const useToggleJob = () => {
             i18n.t('Failed to update job: {{message}}', {
                 message,
                 nsSeparator: '###',
+                // React escapes the text; i18next would show ' as &#39;
+                interpolation: { escapeValue: false },
             }),
         { critical: true }
     )
@@ -79,6 +81,8 @@ export const useCreateJob = ({ onSuccess }: { onSuccess?: () => void }) => {
             i18n.t('Failed to create job: {{message}}', {
                 message,
                 nsSeparator: '###',
+                // React escapes the text; i18next would show ' as &#39;
+                interpolation: { escapeValue: false },
             }),
         { critical: true }
     )

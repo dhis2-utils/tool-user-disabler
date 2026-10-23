@@ -1,4 +1,4 @@
-import { UserDetails } from '../types'
+import type { UserDetails } from '../types'
 import { useApiDataQuery } from '../utils/useApiDataQuery'
 
 export const useUserDetails = (userId: string) => {

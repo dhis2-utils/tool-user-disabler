@@ -1,27 +1,36 @@
 import i18n from '@dhis2/d2-i18n'
 import { Button, CircularLoader, NoticeBox } from '@dhis2/ui'
 import { useQueryClient } from '@tanstack/react-query'
-import { RowSelectionState } from '@tanstack/react-table'
+import type { RowSelectionState } from '@tanstack/react-table'
 import { useMemo, useState } from 'react'
 import { DisableUsersModal } from '../components/DisableUsersModal'
 import { JobSection } from '../components/JobSection'
 import { UserFilterForm } from '../components/UserFilterForm'
 import { UserInfoModal } from '../components/UserInfoModal'
 import { UsersTable } from '../components/UsersTable'
+import { useCurrentUserId } from '../hooks/useCurrentUser'
 import { useUsers } from '../hooks/useUsers'
-import {
-    DEFAULT_FILTER,
-    DisableResult,
-    UserFilter,
-    UserListItem,
-} from '../types'
+import type { DisableResult, UserFilter, UserListItem } from '../types'
+import { DEFAULT_FILTER } from '../types'
 import { getErrorMessage } from '../utils/errors'
 import styles from './UsersPage.module.css'
 
 export const UsersPage = () => {
     const [appliedFilter, setAppliedFilter] =
         useState<UserFilter>(DEFAULT_FILTER)
-    const { users, isLoading, isFetching, error } = useUsers(appliedFilter)
+    const {
+        users,
+        isLoading: usersLoading,
+        isFetching,
+        error: usersError,
+    } = useUsers(appliedFilter)
+    const {
+        currentUserId,
+        isLoading: currentUserLoading,
+        error: currentUserError,
+    } = useCurrentUserId()
+    const isLoading = usersLoading || currentUserLoading
+    const error = usersError ?? currentUserError
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
     const [infoUser, setInfoUser] = useState<UserListItem | null>(null)
     const [usersToDisable, setUsersToDisable] = useState<UserListItem[] | null>(
@@ -31,9 +40,12 @@ export const UsersPage = () => {
     const selectedUsers = useMemo(
         () =>
             (users ?? []).filter(
-                (user) => rowSelection[user.id] && !user.disabled
+                (user) =>
+                    rowSelection[user.id] &&
+                    !user.disabled &&
+                    user.id !== currentUserId
             ),
-        [users, rowSelection]
+        [users, rowSelection, currentUserId]
     )
 
     const queryClient = useQueryClient()
@@ -79,7 +91,7 @@ export const UsersPage = () => {
                     {getErrorMessage(error)}
                 </NoticeBox>
             )}
-            {!isLoading && !error && users && (
+            {!isLoading && !error && users && currentUserId && (
                 <>
                     <div className={styles.bulkBar}>
                         <Button
@@ -94,13 +106,14 @@ export const UsersPage = () => {
                         <span className={styles.selectionCount}>
                             {selectedUsers.length === 1
                                 ? i18n.t('1 user selected')
-                                : i18n.t('{{count}} users selected', {
-                                      count: selectedUsers.length,
+                                : i18n.t('{{number}} users selected', {
+                                      number: selectedUsers.length,
                                   })}
                         </span>
                     </div>
                     <UsersTable
                         users={users}
+                        currentUserId={currentUserId}
                         rowSelection={rowSelection}
                         onRowSelectionChange={setRowSelection}
                         onShowInfo={(user) => setInfoUser(user)}
