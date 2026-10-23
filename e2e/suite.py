@@ -182,6 +182,9 @@ class Api:
         )["jobConfigurations"]
 
     def session_cookie(self):
+        """The session cookie as (name, value). The name is JSESSIONID
+        unless the server is configured with another one, such as
+        JSESSIONID_<instance> when several instances share a host."""
         req = urllib.request.Request(
             f"{self.base}/api/me?fields=id",
             headers={"Authorization": self.auth},
@@ -189,8 +192,8 @@ class Api:
         with urllib.request.urlopen(req, timeout=60) as response:
             for header in response.headers.get_all("Set-Cookie") or []:
                 name, _, value = header.split(";", 1)[0].partition("=")
-                if name.strip() == "JSESSIONID":
-                    return value.strip()
+                if name.strip().startswith("JSESSIONID"):
+                    return name.strip(), value.strip()
         raise SuiteError("login", "the server set no JSESSIONID cookie")
 
 
@@ -836,11 +839,12 @@ class Suite:
         browser = playwright.chromium.launch(headless=True)
         try:
             context = browser.new_context(viewport={"width": 1440, "height": 900})
+            cookie_name, cookie_value = self.api.session_cookie()
             context.add_cookies(
                 [
                     {
-                        "name": "JSESSIONID",
-                        "value": self.api.session_cookie(),
+                        "name": cookie_name,
+                        "value": cookie_value,
                         "url": self.config["base"],
                     }
                 ]

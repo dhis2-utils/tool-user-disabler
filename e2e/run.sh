@@ -6,7 +6,7 @@
 # credentials.
 #
 #   DHIS2_URL=http://localhost:8080 DHIS2_USER=admin DHIS2_PASS=district \
-#   APP_ZIP="$PWD/build/bundle/tool-user-disabler-1.0.0.zip" \
+#   APP_ZIP="$PWD/build/bundle/tool-user-disabler-1.1.0.zip" \
 #   RESULTS_DIR=/tmp/e2e-results e2e/run.sh
 #
 # Exit codes: 0 all tests passed, 1 a test failed, 2 the suite could not run.
