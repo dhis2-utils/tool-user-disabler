@@ -1,10 +1,13 @@
 import { useDataEngine } from '@dhis2/app-runtime'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useState } from 'react'
-import { DisableResult, UserListItem } from '../types'
+import type { DisableResult, UserListItem } from '../types'
 import { getErrorMessage } from '../utils/errors'
 
-type Progress = { done: number; total: number }
+interface Progress {
+    done: number
+    total: number
+}
 
 /**
  * Disables users one by one via POST /api/users/{id}/disabled, reporting
@@ -24,6 +27,7 @@ export const useDisableUsers = () => {
 
             for (const user of users) {
                 try {
+                    // oxlint-disable-next-line no-await-in-loop -- one request at a time keeps the progress count accurate and spares the server
                     await engine.mutate({
                         resource: `users/${user.id}/disabled`,
                         type: 'create',

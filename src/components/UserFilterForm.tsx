@@ -10,10 +10,10 @@ import {
 } from '@dhis2/ui'
 import { useState } from 'react'
 import { useUserGroups, useUserRoles } from '../hooks/useUserRolesAndGroups'
-import { PeriodType, UserFilter } from '../types'
+import type { PeriodType, UserFilter } from '../types'
 import styles from './UserFilterForm.module.css'
 
-type UserFilterFormProps = {
+interface UserFilterFormProps {
     initialFilter: UserFilter
     onApply: (filter: UserFilter) => void
     loading: boolean
@@ -60,6 +60,7 @@ export const UserFilterForm = ({
                     }
                     dense
                     className={styles.periodType}
+                    dataTest="filter-period-type"
                 >
                     <SingleSelectOption
                         label={i18n.t('Months')}
@@ -76,6 +77,7 @@ export const UserFilterForm = ({
                     <InputField
                         label={i18n.t('Date')}
                         type="date"
+                        dataTest="filter-date"
                         value={draft.specificDate}
                         onChange={({ value }) =>
                             update({ specificDate: value ?? '' })
@@ -96,6 +98,7 @@ export const UserFilterForm = ({
                         }
                         type="number"
                         min="1"
+                        dataTest="filter-num-periods"
                         value={numPeriodsInput}
                         onChange={({ value }) =>
                             setNumPeriodsInput(value ?? '')
@@ -113,6 +116,7 @@ export const UserFilterForm = ({
 
                 <MultiSelectField
                     label={i18n.t('User roles')}
+                    dataTest="filter-user-roles"
                     selected={draft.roleIds}
                     onChange={({ selected }) => update({ roleIds: selected })}
                     loading={rolesLoading}
@@ -133,6 +137,7 @@ export const UserFilterForm = ({
 
                 <MultiSelectField
                     label={i18n.t('User groups')}
+                    dataTest="filter-user-groups"
                     selected={draft.groupIds}
                     onChange={({ selected }) => update({ groupIds: selected })}
                     loading={groupsLoading}

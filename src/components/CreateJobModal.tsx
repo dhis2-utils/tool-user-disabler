@@ -9,7 +9,7 @@ import {
     ModalTitle,
 } from '@dhis2/ui'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
-import { useState } from 'react'
+import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useCreateJob } from '../hooks/useInactiveUsersJob'
@@ -21,11 +21,15 @@ const wholeNumber = (message: string) => z.string().regex(/^[0-9]+$/, message)
 const buildSchema = () =>
     z.object({
         name: z.string().trim().min(1, i18n.t('Name is required')),
+        // The same ranges DHIS2 enforces for this job type's parameters.
         inactiveMonths: wholeNumber(i18n.t('Enter a whole number')).refine(
-            (value) => Number(value) >= 1,
-            i18n.t('Must be at least 1')
+            (value) => Number(value) >= 1 && Number(value) <= 24,
+            i18n.t('Enter a number from 1 to 24')
         ),
-        reminderDaysBefore: wholeNumber(i18n.t('Enter a whole number')),
+        reminderDaysBefore: wholeNumber(i18n.t('Enter a whole number')).refine(
+            (value) => Number(value) >= 1 && Number(value) <= 28,
+            i18n.t('Enter a number from 1 to 28')
+        ),
         cronExpression: z
             .string()
             .trim()
@@ -34,12 +38,12 @@ const buildSchema = () =>
 
 type FormValues = z.infer<ReturnType<typeof buildSchema>>
 
-type CreateJobModalProps = {
+interface CreateJobModalProps {
     onClose: () => void
 }
 
 export const CreateJobModal = ({ onClose }: CreateJobModalProps) => {
-    const [schema] = useState(buildSchema)
+    const schema = useMemo(() => buildSchema(), [])
     const { control, handleSubmit } = useForm<FormValues>({
         resolver: standardSchemaResolver(schema),
         defaultValues: {
@@ -94,6 +98,7 @@ export const CreateJobModal = ({ onClose }: CreateJobModalProps) => {
                                 label={i18n.t('Inactive months')}
                                 type="number"
                                 min="1"
+                                max="24"
                                 helpText={i18n.t(
                                     'Users who have not logged in for this many months are disabled'
                                 )}
@@ -115,7 +120,8 @@ export const CreateJobModal = ({ onClose }: CreateJobModalProps) => {
                                 onBlur={() => field.onBlur()}
                                 label={i18n.t('Reminder days before')}
                                 type="number"
-                                min="0"
+                                min="1"
+                                max="28"
                                 helpText={i18n.t(
                                     'Days before disabling that users receive a reminder email'
                                 )}
@@ -137,7 +143,7 @@ export const CreateJobModal = ({ onClose }: CreateJobModalProps) => {
                                 onBlur={() => field.onBlur()}
                                 label={i18n.t('Cron expression')}
                                 helpText={i18n.t(
-                                    'When the job runs, e.g. "0 0 20 ? * *" is every day at 20:00'
+                                    'When the job runs. For example, "0 0 20 ? * *" runs every day at 8 PM.'
                                 )}
                                 onChange={({ value }) =>
                                     field.onChange(value ?? '')

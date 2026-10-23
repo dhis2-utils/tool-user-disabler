@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-08-21T12:33:32.770Z\n"
-"PO-Revision-Date: 2026-08-21T12:33:32.770Z\n"
+"POT-Creation-Date: 2026-10-23T07:40:40.886Z\n"
+"PO-Revision-Date: 2026-10-23T07:40:40.886Z\n"
 
 msgid "Name is required"
 msgstr "Name is required"
@@ -14,8 +14,11 @@ msgstr "Name is required"
 msgid "Enter a whole number"
 msgstr "Enter a whole number"
 
-msgid "Must be at least 1"
-msgstr "Must be at least 1"
+msgid "Enter a number from 1 to 24"
+msgstr "Enter a number from 1 to 24"
+
+msgid "Enter a number from 1 to 28"
+msgstr "Enter a number from 1 to 28"
 
 msgid "Cron expression is required"
 msgstr "Cron expression is required"
@@ -44,6 +47,9 @@ msgstr "Days before disabling that users receive a reminder email"
 msgid "Cron expression"
 msgstr "Cron expression"
 
+msgid "When the job runs. For example, \"0 0 20 ? * *\" runs every day at 8 PM."
+msgstr "When the job runs. For example, \"0 0 20 ? * *\" runs every day at 8 PM."
+
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -52,6 +58,9 @@ msgstr "Create job"
 
 msgid "User \"{{username}}\" will be disabled. Do you want to continue?"
 msgstr "User \"{{username}}\" will be disabled. Do you want to continue?"
+
+msgid "{{number}} users will be disabled. Do you want to continue?"
+msgstr "{{number}} users will be disabled. Do you want to continue?"
 
 msgid "Disable users"
 msgstr "Disable users"
@@ -62,8 +71,14 @@ msgstr "{{done}} of {{total}} users updated…"
 msgid "1 user was successfully disabled"
 msgstr "1 user was successfully disabled"
 
+msgid "{{number}} users were successfully disabled"
+msgstr "{{number}} users were successfully disabled"
+
 msgid "1 user could not be disabled."
 msgstr "1 user could not be disabled."
+
+msgid "{{number}} users could not be disabled."
+msgstr "{{number}} users could not be disabled."
 
 msgid "Username"
 msgstr "Username"
@@ -95,6 +110,9 @@ msgstr "No job to disable inactive users exists."
 
 msgid "Add job"
 msgstr "Add job"
+
+msgid "Job name"
+msgstr "Job name"
 
 msgid "Enabled"
 msgstr "Enabled"
@@ -190,14 +208,17 @@ msgstr "None"
 msgid "Organisation units"
 msgstr "Organisation units"
 
-msgid "Actions"
-msgstr "Actions"
+msgid "You"
+msgstr "You"
 
 msgid "Disable"
 msgstr "Disable"
 
 msgid "Info"
 msgstr "Info"
+
+msgid "Actions"
+msgstr "Actions"
 
 msgid "Search users"
 msgstr "Search users"
@@ -225,6 +246,9 @@ msgstr "Bulk disable"
 
 msgid "1 user selected"
 msgstr "1 user selected"
+
+msgid "{{number}} users selected"
+msgstr "{{number}} users selected"
 
 msgid "Never"
 msgstr "Never"

@@ -1,6 +1,9 @@
 import { useApiDataQuery } from '../utils/useApiDataQuery'
 
-type NamedRef = { id: string; displayName: string }
+interface NamedRef {
+    id: string
+    displayName: string
+}
 
 export const useUserRoles = () => {
     const { data, isLoading, error } = useApiDataQuery<{

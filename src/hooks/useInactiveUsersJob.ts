@@ -1,13 +1,13 @@
 import { useAlert, useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { JobConfiguration } from '../types'
+import type { JobConfiguration } from '../types'
 import { getErrorMessage } from '../utils/errors'
 import { useApiDataQuery } from '../utils/useApiDataQuery'
 
 export const JOB_TYPE = 'DISABLE_INACTIVE_USERS'
 
-export type NewJobValues = {
+export interface NewJobValues {
     name: string
     inactiveMonths: number
     reminderDaysBefore: number
