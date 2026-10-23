@@ -20,6 +20,7 @@ All notable changes to this project are documented in this file. The format foll
 
 - Six texts were missing from the translation template, so they could not be translated.
 - The user details showed an empty value for a user with no user roles. They now show **None**.
+- The error messages for creating and switching the scheduled job showed an apostrophe as `&#39;`, for example "You don&#39;t have the proper permissions".
 
 ## [1.0.0]
 

@@ -40,6 +40,8 @@ export const useToggleJob = () => {
             i18n.t('Failed to update job: {{message}}', {
                 message,
                 nsSeparator: '###',
+                // React escapes the text; i18next would show ' as &#39;
+                interpolation: { escapeValue: false },
             }),
         { critical: true }
     )
@@ -79,6 +81,8 @@ export const useCreateJob = ({ onSuccess }: { onSuccess?: () => void }) => {
             i18n.t('Failed to create job: {{message}}', {
                 message,
                 nsSeparator: '###',
+                // React escapes the text; i18next would show ' as &#39;
+                interpolation: { escapeValue: false },
             }),
         { critical: true }
     )
