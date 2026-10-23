@@ -8,9 +8,21 @@ The User Disabler Tool finds users who have not logged in to DHIS2 for a period 
 
 The tool works with DHIS2 2.41 and later.
 
-You need a user that can update users. DHIS2 lets you disable only the users that you can manage. A superuser with the ALL authority can use every part of the tool.
+A superuser with the ALL authority can use every part of the tool. A user without ALL needs a user role with these authorities. The names are the ones that the Users app shows when you edit a user role:
 
-<!-- VERIFY IN APP: the exact authorities a non-superuser needs to list users, disable users and create the scheduled job. -->
+| To                       | Authority                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| Open the tool            | **tooluserdisabler app**, in **Available app authorities**                                                   |
+| List users               | **View user**                                                                                                |
+| Disable users            | **Add/Update Public** for **User**, in **Metadata authorities**; or **Add/Update User Within Managed Group** |
+| Create the scheduled job | **Scheduling Administration**                                                                                |
+
+DHIS2 lets you disable only the users that you can manage:
+
+- With **Add/Update Public** for **User**, you can manage every user who has no authority that you do not have. You cannot manage a superuser.
+- With **Add/Update User Within Managed Group**, you can manage the users in the user groups that you manage, if they have no authority that you do not have.
+
+The list also shows users that you cannot manage. If you try to disable them, the summary lists them with the reason that DHIS2 gives.
 
 > **Warning**
 >
@@ -20,10 +32,8 @@ You need a user that can update users. DHIS2 lets you disable only the users tha
 
 The tool is not on the App Hub. Install it in one of two ways:
 
-- Download the zip file from the tool's [GitHub releases](https://github.com/dhis2-utils/tool-user-disabler/releases), and upload it in the App Management app.
+- Download the zip file from the tool's [GitHub releases](https://github.com/dhis2-utils/tool-user-disabler/releases). In the App Management app, click **Manual install**, then **Upload an app to install**, and choose the zip file.
 - Install it from the DHIS2 Admin Toolbox app.
-
-<!-- VERIFY IN APP: the label of the upload control in App Management, 2.41 to 2.43. -->
 
 After you install the tool, add it to the user roles that should open it.
 
@@ -83,7 +93,8 @@ To switch the job on or off, use the **Enabled** switch. If more than one job of
 ## Known limitations { #tool-user-disabler-limitations }
 
 - The tool loads every user that matches the filter at once. On an instance with very many users, the list can take a long time to load.
-- DHIS2 can refuse to disable a user, even for a superuser. For example, on some databases DHIS2 refuses users who are not in a user group that you can manage. The summary lists these users with the reason that DHIS2 gives.
+- DHIS2 can refuse to disable a user, even for a superuser. For example, on some databases DHIS2 refuses users who are not in a user group that you can manage. The summary lists these users with the reason that DHIS2 gives. DHIS2 gives the same reason for every user that you cannot manage, also when the cause is an authority that you do not have: "You must have permissions to create user, or ability to manage at least one user group for the user."
+- On DHIS2 2.41, if you are not a superuser, the list leaves out users who have one of your own user roles.
 - The tool compares the last login with the date and time on your computer.
 - The tool shows and changes only one scheduled job. If there are several, use the Scheduler app.
 - The tool cannot enable users. Use the Users app to do that.
